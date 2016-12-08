@@ -36,4 +36,4 @@ for (i in 1:length(list.of.packages)) {
 }
 
 update.packages(repos=repos,lib=lib.loc, dependencies=TRUE, ask=FALSE)
-lapply(list.of.packages, require, character.only=TRUE)
+getPackages <- lapply(list.of.packages, require, character.only=TRUE)
