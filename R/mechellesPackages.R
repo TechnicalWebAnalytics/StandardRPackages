@@ -1,9 +1,5 @@
-repos <- "http://cran.rstudio.com"
-lib.loc <- "/usr/local/lib/R/site-library"
 
-is.installed <- function(mypkg) is.element(mypkg, installed.packages()[,1]) 
-
-list.of.packages <- c(
+listPackages <- c(
 	"rJava", # may need to update system java
 	"RGoogleAnalytics", 
 	"plyr",
@@ -22,18 +18,54 @@ list.of.packages <- c(
 	"XML",
 	"RCurl",
 	"httr",
-	"differR",
 	"DT",
 	"RMySQL",
 	"curl",
-	"jsonlite")
+	"jsonlite",
+	"session")
 
-for (i in 1:length(list.of.packages)) {
-	if(is.installed(list.of.packages[i]) == FALSE){
-		install.packages(list.of.packages[i],repos=repos,lib=lib.loc, dependencies=TRUE)
-		print(i)
+fullPackageInstall <- function(
+
+	listPackages    = listPackages, 
+	packagesPath     = NULL){
+
+	# get general repo list
+	repos <- "http://cran.rstudio.com"
+
+	# set check if installed funciton
+	is.installed <- function(mypkg) is.element(mypkg, installed.packages()[,1]) 
+
+	# get list of packages
+	list.of.packages <- listPackages
+
+	# loop through and check package installs
+	for (i in 1:length(list.of.packages)) {
+		if(is.installed(list.of.packages[i]) == FALSE){
+
+			install.packages(
+				list.of.packages[i],
+				repos        = repos,
+				lib          = packagesPath,
+				dependencies = TRUE)
+
+			print(i)
+		}
 	}
+
+	# update packages
+	update.packages(
+		repos        = repos,
+		lib          = packagesPath,
+		dependencies = TRUE, 
+		ask          = FALSE)
+
+	# load packages
+	data.frame(
+
+		Package        = list.of.packages,
+		Loaded         = sapply(list.of.packages, require, 
+		character.only = TRUE))
+
 }
 
-update.packages(repos=repos,lib=lib.loc, dependencies=TRUE, ask=FALSE)
-getPackages <- lapply(list.of.packages, require, character.only=TRUE)
+fullPackageInstall(listPackages, packagesPath = "/usr/local/lib/R/site-library")
