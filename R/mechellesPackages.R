@@ -68,4 +68,4 @@ fullPackageInstall <- function(
 
 }
 
-fullPackageInstall(listPackages, packagesPath = "/usr/local/lib/R/site-library")
+fullPackageInstall(listPackages)
