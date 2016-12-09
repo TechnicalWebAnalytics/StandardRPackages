@@ -67,5 +67,3 @@ fullPackageInstall <- function(
 		character.only = TRUE))
 
 }
-
-fullPackageInstall(listPackages)
